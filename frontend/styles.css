@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#successRate {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.habit {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.habit-text {
+    flex: 1;
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.habit-text:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+button#resetHistory {
+    margin-bottom: 20px;
+    background-color: #FF0000;
+}
+
+.success-btn {
+    background-color: green;
+}
+
+.fail-btn {
+    background-color: red;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.history-entry {
+    display: inline-block;
+    width: 1cm;
+    height: 1cm;
+    margin: 2px;
+    position: relative;
+}
+
+.history-entry.erledigt {
+    background-color: green;
+}
+
+.history-entry.nicht-erledigt {
+    background-color: red;
+}
+
+.history-entry::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+.history-entry:hover::after {
+    opacity: 1;
+}
+
+.past-list {
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.past-list:hover {
+    background-color: #ddd;
+}
+
+#listName, #resetHistory {
+    align-self: center;
+}

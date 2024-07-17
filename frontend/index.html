@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gewohnheitstracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gewohnheitstracker</h1>
+        <div id="successRate">Erfolgsquote: 0%</div>
+        <form id="habitForm">
+            <label for="date">Datum:</label>
+            <input type="date" id="date" name="date" required>
+
+            <div class="habit" data-habit-id="footMassage">
+                <input type="text" id="footMassageInput" placeholder="Fuß kneten" class="habit-text">
+                <button type="button" class="success-btn">Success</button>
+                <button type="button" class="fail-btn">Fail</button>
+            </div>
+        </form>
+        <h2>Vergangene Einträge</h2>
+        <div id="history"></div>
+        <h2>Vergangene Listen</h2>
+        <div id="pastLists"></div>
+        <input type="text" id="listName" placeholder="Name der Liste" required>
+        <button id="resetHistory">Liste archivieren</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
