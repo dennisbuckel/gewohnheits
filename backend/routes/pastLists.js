@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const PastList = require('../models/pastList');
+const PastList = require('../models/pastlists');
 
 // GET all past lists
 router.get('/', async (req, res) => {
