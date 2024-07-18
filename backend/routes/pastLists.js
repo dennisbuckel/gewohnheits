@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const PastList = require('../models/PastList');
+const PastList = require('../models/pastList');
 
 // GET all past lists
 router.get('/', async (req, res) => {
@@ -9,12 +9,12 @@ router.get('/', async (req, res) => {
         res.json(pastLists);
     } catch (err) {
         res.status(500).json({ message: err.message });
-    }
+    }z
 });
 
 // POST a new past list
 router.post('/', async (req, res) => {
-    const pastList = new PastList({
+    const pastList = new pastList({
         name: req.body.name,
         entries: req.body.entries
     });
