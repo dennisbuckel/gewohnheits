@@ -119,6 +119,7 @@ async function displayHistory() {
             const progressBarInner = document.createElement('div');
             progressBarInner.className = 'progress-bar-inner';
             progressBarInner.style.width = `${successRate}%`;
+            progressBarInner.textContent = `${successRate}%`;
             progressBar.appendChild(progressBarInner);
             dateGroupDiv.appendChild(progressBar);
 
