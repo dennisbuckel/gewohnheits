@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Display the history and past lists on page load
     displayHistory();
     displayPastLists();
     updateSuccessRate();
@@ -35,13 +34,16 @@ async function checkPassword() {
             body: JSON.stringify({ password: inputPassword })
         });
 
-        const result = await response.json();
-
-        if (result.success) {
-            document.getElementById('passwordPrompt').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
+        if (response.headers.get('content-type')?.includes('application/json')) {
+            const result = await response.json();
+            if (result.success) {
+                document.getElementById('passwordPrompt').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                passwordError.textContent = result.message;
+            }
         } else {
-            passwordError.textContent = result.message;
+            throw new Error('Invalid content type');
         }
     } catch (error) {
         console.error('Error:', error);
