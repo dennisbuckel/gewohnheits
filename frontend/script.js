@@ -12,8 +12,6 @@ function checkPassword() {
     }
 }
 
-// Restlicher Code für den Gewohnheitstracker
-
 document.querySelectorAll('.success-btn').forEach(button => {
     button.addEventListener('click', function() {
         const habitId = this.closest('.habit').getAttribute('data-habit-id');
