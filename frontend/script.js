@@ -98,7 +98,7 @@ async function displayHistory() {
             const dateGroupDiv = document.createElement('div');
             dateGroupDiv.className = 'history-date-group';
             const dateHeader = document.createElement('h3');
-            dateHeader.textContent = date;
+            dateHeader.textContent = formatDate(date);
             dateGroupDiv.appendChild(dateHeader);
 
             const entriesDiv = document.createElement('div');
@@ -112,6 +112,16 @@ async function displayHistory() {
             });
 
             dateGroupDiv.appendChild(entriesDiv);
+
+            const successRate = calculateSuccessRate(entries);
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            const progressBarInner = document.createElement('div');
+            progressBarInner.className = 'progress-bar-inner';
+            progressBarInner.style.width = `${successRate}%`;
+            progressBar.appendChild(progressBarInner);
+            dateGroupDiv.appendChild(progressBar);
+
             historyDiv.appendChild(dateGroupDiv);
         }
 
@@ -126,6 +136,17 @@ function groupBy(array, key) {
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         return result;
     }, {});
+}
+
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('de-DE', options);
+}
+
+function calculateSuccessRate(entries) {
+    const total = entries.length;
+    const successCount = entries.filter(entry => entry.status === 'erledigt').length;
+    return total === 0 ? 0 : Math.round((successCount / total) * 100);
 }
 
 async function updateSuccessRate() {
