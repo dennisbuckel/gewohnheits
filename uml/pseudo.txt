@@ -1,0 +1,10 @@
+
+User -> Eingabe eines Passworts um die webseite zu öffnen
+User -> Browser: Eingabe einer neuen Gewohnheit
+Browser -> Nginx: HTTP POST /api/habits
+Nginx -> Node.js Server: Weiterleitung der Anfrage
+Node.js Server -> MongoDB: Speichern der neuen Gewohnheit
+MongoDB -> Node.js Server: Bestätigung speichern
+Node.js Server -> Nginx: Antwort an den Reverse Proxy
+Nginx -> Browser: Antwort an den Browser
+Browser -> User: Bestätigung der Speicherung anzeigen

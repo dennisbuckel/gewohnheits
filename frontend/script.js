@@ -1,4 +1,19 @@
-// Event Listener für die Success- und Fail-Buttons
+const correctPassword = "meinGeheimnis"; // Ändere das Passwort nach Bedarf
+
+function checkPassword() {
+    const inputPassword = document.getElementById('passwordInput').value;
+    const passwordError = document.getElementById('passwordError');
+
+    if (inputPassword === correctPassword) {
+        document.getElementById('passwordPrompt').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+    } else {
+        passwordError.textContent = 'Falsches Passwort, bitte erneut versuchen.';
+    }
+}
+
+// Restlicher Code für den Gewohnheitstracker
+
 document.querySelectorAll('.success-btn').forEach(button => {
     button.addEventListener('click', function() {
         const habitId = this.closest('.habit').getAttribute('data-habit-id');
@@ -13,7 +28,6 @@ document.querySelectorAll('.fail-btn').forEach(button => {
     });
 });
 
-// Funktion zum Speichern einer Gewohnheit
 async function saveHabit(habitId, status) {
     const date = document.getElementById('date').value;
     if (!date) {
@@ -50,7 +64,6 @@ async function saveHabit(habitId, status) {
     }
 }
 
-// Funktion zum Anzeigen der Historie
 async function displayHistory() {
     try {
         const response = await fetch('/api/habits');
@@ -72,7 +85,6 @@ async function displayHistory() {
     }
 }
 
-// Funktion zur Aktualisierung der Erfolgsquote
 async function updateSuccessRate() {
     try {
         const response = await fetch('/api/habits');
@@ -87,7 +99,6 @@ async function updateSuccessRate() {
     }
 }
 
-// Event Listener für den Archivieren-Button
 document.getElementById('resetHistory').addEventListener('click', async function() {
     const listName = document.getElementById('listName').value.trim();
     if (!listName) {
@@ -128,7 +139,6 @@ document.getElementById('resetHistory').addEventListener('click', async function
     }
 });
 
-// Funktion zum Anzeigen der vergangenen Listen
 async function displayPastLists() {
     try {
         const response = await fetch('/api/pastLists');
@@ -151,7 +161,6 @@ async function displayPastLists() {
     }
 }
 
-// Funktion zum Anzeigen der Einträge vergangener Listen
 function displayPastListEntries(list) {
     const historyDiv = document.getElementById('history');
     historyDiv.innerHTML = '';
@@ -164,7 +173,6 @@ function displayPastListEntries(list) {
     });
 }
 
-// Historie und vergangene Listen beim Laden der Seite anzeigen
 document.addEventListener('DOMContentLoaded', () => {
     displayHistory();
     displayPastLists();
