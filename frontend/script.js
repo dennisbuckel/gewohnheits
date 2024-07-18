@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     passwordPrompt.style.display = 'block';
+    fetchSuggestions();
 });
 
 document.getElementById('passwordInput').addEventListener('keyup', function(event) {
@@ -71,10 +72,31 @@ async function saveHabit(habitId, status) {
             await displayHistory();
             updateSuccessRate();
             habitInput.value = '';
+            fetchSuggestions();
         } else {
             const result = await response.json();
             alert(result.message);
         }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function fetchSuggestions() {
+    try {
+        const response = await fetch('/api/habits/top');
+        const suggestions = await response.json();
+        const suggestionsDiv = document.getElementById('suggestions');
+        suggestionsDiv.innerHTML = '';
+
+        suggestions.forEach(suggestion => {
+            const button = document.createElement('button');
+            button.textContent = suggestion._id;
+            button.addEventListener('click', () => {
+                document.getElementById('footMassageInput').value = suggestion._id;
+            });
+            suggestionsDiv.appendChild(button);
+        });
     } catch (error) {
         console.error('Error:', error);
     }

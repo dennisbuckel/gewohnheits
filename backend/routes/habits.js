@@ -38,4 +38,18 @@ router.delete('/', async (req, res) => {
     }
 });
 
+// Meistgenutzte Habits abrufen
+router.get('/top', async (req, res) => {
+    try {
+        const habits = await Habit.aggregate([
+            { $group: { _id: "$habit", count: { $sum: 1 } } },
+            { $sort: { count: -1 } },
+            { $limit: 10 }
+        ]);
+        res.json(habits);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 module.exports = router;
