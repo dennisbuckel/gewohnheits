@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Habits löschen (zum Beispiel nach Archivierung)
+// Alle Habits löschen (zum Beispiel nach Archivierung)
 router.delete('/', async (req, res) => {
     try {
         await Habit.deleteMany();
