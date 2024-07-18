@@ -11,18 +11,6 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
 
-// Passwort überprüfen
-app.post('/api/check-password', (req, res) => {
-    const { password } = req.body;
-    const correctPassword = process.env.CORRECT_PASSWORD; // Passwort aus .env-Datei
-
-    if (password === correctPassword) {
-        res.status(200).json({ success: true });
-    } else {
-        res.status(401).json({ success: false, message: 'Falsches Passwort' });
-    }
-});
-
 app.use('/api/habits', require('./routes/habits'));
 app.use('/api/pastLists', require('./routes/pastLists'));
 

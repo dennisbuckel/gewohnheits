@@ -17,34 +17,16 @@ document.getElementById('passwordInput').addEventListener('keyup', function(even
     }
 });
 
-async function checkPassword() {
+function checkPassword() {
     const inputPassword = document.getElementById('passwordInput').value;
     const passwordError = document.getElementById('passwordError');
 
-    try {
-        const response = await fetch('/api/check-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ password: inputPassword })
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            if (result.success) {
-                document.getElementById('passwordPrompt').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'block';
-                await displayHistory();
-            } else {
-                passwordError.textContent = result.message;
-            }
-        } else {
-            throw new Error('Invalid response');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        passwordError.textContent = 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.';
+    if (inputPassword === correctPassword) {
+        document.getElementById('passwordPrompt').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        displayHistory();
+    } else {
+        passwordError.textContent = 'Falsches Passwort, bitte erneut versuchen.';
     }
 }
 
@@ -163,12 +145,18 @@ function calculateSuccessRate(entries) {
     return total === 0 ? 0 : Math.round((successCount / total) * 100);
 }
 
-function updateSuccessRate() {
-    const history = JSON.parse(localStorage.getItem('history')) || [];
-    const total = history.length;
-    const successCount = history.filter(entry => entry.status === 'erledigt').length;
-    const successRate = total === 0 ? 0 : Math.round((successCount / total) * 100);
-    document.getElementById('successRate').textContent = `Erfolgsquote: ${successRate}%`;
+async function updateSuccessRate() {
+    try {
+        const response = await fetch('/api/habits');
+        const history = await response.json();
+
+        const total = history.length;
+        const successCount = history.filter(entry => entry.status === 'erledigt').length;
+        const successRate = total === 0 ? 0 : Math.round((successCount / total) * 100);
+        document.getElementById('successRate').textContent = `Erfolgsquote: ${successRate}%`;
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
 document.getElementById('resetHistory').addEventListener('click', async function() {
