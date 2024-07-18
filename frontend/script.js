@@ -12,6 +12,23 @@ function checkPassword() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    displayHistory();
+    displayPastLists();
+    updateSuccessRate();
+
+    // Überprüfen, ob der Passwortschutz angezeigt wird
+    const passwordPrompt = document.getElementById('passwordPrompt');
+    const mainContent = document.getElementById('mainContent');
+
+    // Falls mainContent fälschlicherweise sichtbar ist, wird es ausgeblendet
+    if (mainContent.style.display !== 'none') {
+        mainContent.style.display = 'none';
+    }
+
+    passwordPrompt.style.display = 'block';
+});
+
 document.querySelectorAll('.success-btn').forEach(button => {
     button.addEventListener('click', function() {
         const habitId = this.closest('.habit').getAttribute('data-habit-id');
