@@ -1,24 +1,5 @@
-const correctPassword = "meinGeheimnis"; // Ändere das Passwort nach Bedarf
-
-function checkPassword() {
-    const inputPassword = document.getElementById('passwordInput').value;
-    const passwordError = document.getElementById('passwordError');
-
-    if (inputPassword === correctPassword) {
-        document.getElementById('passwordPrompt').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
-    } else {
-        passwordError.textContent = 'Falsches Passwort, bitte erneut versuchen.';
-    }
-}
-
-document.getElementById('passwordInput').addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') {
-        checkPassword();
-    }
-});
-
 document.addEventListener('DOMContentLoaded', () => {
+    // Display the history and past lists on page load
     displayHistory();
     displayPastLists();
     updateSuccessRate();
@@ -34,6 +15,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     passwordPrompt.style.display = 'block';
 });
+
+document.getElementById('passwordInput').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        checkPassword();
+    }
+});
+
+async function checkPassword() {
+    const inputPassword = document.getElementById('passwordInput').value;
+    const passwordError = document.getElementById('passwordError');
+
+    try {
+        const response = await fetch('/api/check-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password: inputPassword })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            document.getElementById('passwordPrompt').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        } else {
+            passwordError.textContent = result.message;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        passwordError.textContent = 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.';
+    }
+}
 
 document.querySelectorAll('.success-btn').forEach(button => {
     button.addEventListener('click', function() {
