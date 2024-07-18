@@ -12,6 +12,12 @@ function checkPassword() {
     }
 }
 
+document.getElementById('passwordInput').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        checkPassword();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     displayHistory();
     displayPastLists();
@@ -87,17 +93,39 @@ async function displayHistory() {
         const historyDiv = document.getElementById('history');
         historyDiv.innerHTML = '';
 
-        history.forEach(entry => {
-            const entryDiv = document.createElement('div');
-            entryDiv.className = 'history-entry ' + entry.status;
-            entryDiv.setAttribute('data-tooltip', `${entry.date} - ${entry.habit}`);
-            historyDiv.appendChild(entryDiv);
-        });
+        const groupedByDate = groupBy(history, 'date');
+        for (const [date, entries] of Object.entries(groupedByDate)) {
+            const dateGroupDiv = document.createElement('div');
+            dateGroupDiv.className = 'history-date-group';
+            const dateHeader = document.createElement('h3');
+            dateHeader.textContent = date;
+            dateGroupDiv.appendChild(dateHeader);
+
+            const entriesDiv = document.createElement('div');
+            entriesDiv.className = 'history-entries';
+
+            entries.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'history-entry ' + entry.status;
+                entryDiv.setAttribute('data-tooltip', `${entry.date} - ${entry.habit}`);
+                entriesDiv.appendChild(entryDiv);
+            });
+
+            dateGroupDiv.appendChild(entriesDiv);
+            historyDiv.appendChild(dateGroupDiv);
+        }
 
         updateSuccessRate();
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+function groupBy(array, key) {
+    return array.reduce((result, currentValue) => {
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
+        return result;
+    }, {});
 }
 
 async function updateSuccessRate() {
