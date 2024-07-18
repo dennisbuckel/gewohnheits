@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const Habit = require('../models/habit');
+const Habit = require('../models/Habit');
 
-// GET all habits
+// Alle Habits abrufen
 router.get('/', async (req, res) => {
     try {
-        const habits = await Habit.find();
+        const habits = await Habit.find().sort({ date: 1 });
         res.json(habits);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
 
-// POST a new habit
+// Neuen Habit erstellen
 router.post('/', async (req, res) => {
     const habit = new Habit({
         date: req.body.date,
@@ -28,11 +28,11 @@ router.post('/', async (req, res) => {
     }
 });
 
-// DELETE all habits
+// Habits löschen (zum Beispiel nach Archivierung)
 router.delete('/', async (req, res) => {
     try {
-        await Habit.deleteMany({});
-        res.status(204).json({ message: 'All habits deleted' });
+        await Habit.deleteMany();
+        res.json({ message: 'Alle Habits gelöscht' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
