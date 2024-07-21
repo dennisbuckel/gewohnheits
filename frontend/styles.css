@@ -156,7 +156,7 @@ button:hover {
 
 .progress-bar {
     width: 100%;
-    background-color: #f0f0f0;
+    background-color: #989191;
     border-radius: 5px;
     overflow: hidden;
     margin-top: 10px;
@@ -171,7 +171,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: rgb(219, 41, 41);
     font-weight: bold;
 }
 
