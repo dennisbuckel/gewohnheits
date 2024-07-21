@@ -171,7 +171,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgb(219, 41, 41);
+    color: rgb(0, 0, 0);
     font-weight: bold;
 }
 
