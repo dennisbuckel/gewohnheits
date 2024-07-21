@@ -111,7 +111,7 @@ async function displayHistory() {
         historyDiv.innerHTML = '';
 
         const groupedByDate = groupBy(history, 'date');
-        const sortetDates = Object.keys(groupedByDate).sort((a,b) => new Date(a), new Date(b));
+        const sortetDates = Object.keys(groupedByDate).sort((a,b) => new Date(b) - new Date(a));
         for (const [date, entries] of Object.entries(groupedByDate)) {
             const dateGroupDiv = document.createElement('div');
             dateGroupDiv.className = 'history-date-group';
