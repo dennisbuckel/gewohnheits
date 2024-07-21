@@ -5,7 +5,7 @@ const Habit = require('../models/Habit');
 // Alle Habits abrufen
 router.get('/', async (req, res) => {
     try {
-        const habits = await Habit.find().sort(date);
+        const habits = await Habit.find().sort();
         res.json(habits);
     } catch (err) {
         res.status(500).json({ message: err.message });
