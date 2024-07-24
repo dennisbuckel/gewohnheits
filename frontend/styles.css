@@ -84,6 +84,7 @@ button:hover {
     height: 1cm;
     margin: 2px;
     position: relative;
+    vertical-align: top; /* Ensure buttons stay below the entry */
 }
 
 .history-entry.erledigt {
@@ -176,38 +177,22 @@ button:hover {
 }
 
 .edit-btn, .delete-btn {
-    width: 1cm;
-    height: 1cm;
-    margin: 2px;
+    width: 0.5cm;
+    height: 0.5cm;
+    margin-top: 2px;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 3px; /* Make buttons slightly rounded */
+    position: absolute; /* Position buttons within history-entry */
+    bottom: 0; /* Align buttons at the bottom */
 }
 
 .edit-btn {
     background-color: #ffc107;
+    left: 0; /* Position edit button on the left */
 }
 
 .delete-btn {
     background-color: #dc3545;
-}
-
-button.edit-btn::after, button.delete-btn::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #000;
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-}
-
-button.edit-btn:hover::after, button.delete-btn:hover::after {
-    opacity: 1;
+    right: 0; /* Position delete button on the right */
 }
