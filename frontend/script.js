@@ -155,7 +155,7 @@ function selectEntry(entryDiv, id, habitText, status, date) {
 
 function showEditForm(id, habitText, date) {
     document.getElementById('editFormContainer').style.display = 'block';
-    document.getElementById('editDate').value = date;
+    document.getElementById('editDate').value = date.split('T')[0];
     document.getElementById('editHabit').value = habitText;
 
     document.getElementById('editForm').onsubmit = (e) => {

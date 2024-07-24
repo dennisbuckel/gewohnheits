@@ -51,6 +51,9 @@ app.put('/api/habits/:id', async (req, res) => {
             { date, habit, status },
             { new: true }
         );
+        if (!updatedHabit) {
+            return res.status(404).send();
+        }
         res.json(updatedHabit);
     } catch (error) {
         res.status(400).send(error);
@@ -61,7 +64,10 @@ app.delete('/api/habits/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        await Habit.findByIdAndDelete(id);
+        const deletedHabit = await Habit.findByIdAndDelete(id);
+        if (!deletedHabit) {
+            return res.status(404).send();
+        }
         res.status(204).send();
     } catch (error) {
         res.status(400).send(error);
