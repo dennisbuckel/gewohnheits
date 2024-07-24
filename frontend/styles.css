@@ -156,7 +156,7 @@ button:hover {
 
 .progress-bar {
     width: 100%;
-    background-color: #989191;
+    background-color: #f0f0f0;
     border-radius: 5px;
     overflow: hidden;
     margin-top: 10px;
@@ -171,18 +171,26 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgb(255, 255, 255);
+    color: white;
     font-weight: bold;
 }
 
-@media (min-width: 600px) {
-    .habit {
-        flex-direction: row;
-    }
+.edit-btn {
+    background-color: #ffc107;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-    .habit-text {
-        flex: 1;
-        margin-right: 10px;
-        margin-bottom: 0;
-    }
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 5px;
+    cursor: pointer;
 }

@@ -28,25 +28,27 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Alle Habits löschen (zum Beispiel nach Archivierung)
-router.delete('/', async (req, res) => {
+// Habit aktualisieren
+router.put('/:id', async (req, res) => {
     try {
-        await Habit.deleteMany();
-        res.json({ message: 'Alle Habits gelöscht' });
+        const habit = await Habit.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!habit) {
+            return res.status(404).json({ message: 'Habit not found' });
+        }
+        res.json(habit);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 });
 
-// Meistgenutzte Habits abrufen
-router.get('/top', async (req, res) => {
+// Habit löschen
+router.delete('/:id', async (req, res) => {
     try {
-        const habits = await Habit.aggregate([
-            { $group: { _id: "$habit", count: { $sum: 1 } } },
-            { $sort: { count: -1 } },
-            { $limit: 10 }
-        ]);
-        res.json(habits);
+        const habit = await Habit.findByIdAndDelete(req.params.id);
+        if (!habit) {
+            return res.status(404).json({ message: 'Habit not found' });
+        }
+        res.json({ message: 'Habit deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

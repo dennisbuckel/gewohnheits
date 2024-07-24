@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     passwordPrompt.style.display = 'block';
-    fetchSuggestions();
 });
 
 document.getElementById('passwordInput').addEventListener('keyup', function(event) {
@@ -72,31 +71,10 @@ async function saveHabit(habitId, status) {
             await displayHistory();
             updateSuccessRate();
             habitInput.value = '';
-            fetchSuggestions();
         } else {
             const result = await response.json();
             alert(result.message);
         }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-async function fetchSuggestions() {
-    try {
-        const response = await fetch('/api/habits/top');
-        const suggestions = await response.json();
-        const suggestionsDiv = document.getElementById('suggestions');
-        suggestionsDiv.innerHTML = '';
-
-        suggestions.forEach(suggestion => {
-            const button = document.createElement('button');
-            button.textContent = suggestion._id;
-            button.addEventListener('click', () => {
-                document.getElementById('footMassageInput').value = suggestion._id;
-            });
-            suggestionsDiv.appendChild(button);
-        });
     } catch (error) {
         console.error('Error:', error);
     }
@@ -128,6 +106,19 @@ async function displayHistory() {
                 const entryDiv = document.createElement('div');
                 entryDiv.className = 'history-entry ' + entry.status;
                 entryDiv.setAttribute('data-tooltip', `${entry.date} - ${entry.habit}`);
+
+                const editButton = document.createElement('button');
+                editButton.className = 'edit-btn';
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => editHabit(entry._id, entry.habit, entry.status);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-btn';
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteHabit(entry._id);
+
+                entryDiv.appendChild(editButton);
+                entryDiv.appendChild(deleteButton);
                 entriesDiv.appendChild(entryDiv);
             });
 
@@ -181,6 +172,51 @@ async function updateSuccessRate() {
         document.getElementById('successRate').textContent = `Erfolgsquote: ${successRate}%`;
     } catch (error) {
         console.error('Error:', error);
+    }
+}
+
+async function editHabit(id, habitText, status) {
+    const newHabitText = prompt("Bearbeite den Habit", habitText);
+    if (newHabitText !== null) {
+        try {
+            const response = await fetch(`/api/habits/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ habit: newHabitText, status })
+            });
+
+            if (response.ok) {
+                displayHistory();
+                updateSuccessRate();
+            } else {
+                const result = await response.json();
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+}
+
+async function deleteHabit(id) {
+    if (confirm("Willst du diesen Habit wirklich löschen?")) {
+        try {
+            const response = await fetch(`/api/habits/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                displayHistory();
+                updateSuccessRate();
+            } else {
+                const result = await response.json();
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 }
 
