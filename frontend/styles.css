@@ -84,6 +84,7 @@ button:hover {
     height: 1cm;
     margin: 2px;
     position: relative;
+    cursor: pointer;
 }
 
 .history-entry.erledigt {
@@ -94,27 +95,8 @@ button:hover {
     background-color: red;
 }
 
-.history-entry .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2px;
-}
-
-.history-entry .edit-btn,
-.history-entry .delete-btn {
-    width: 0.5cm;
-    height: 0.5cm;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-.history-entry .edit-btn {
-    background-color: #ffc107;
-}
-
-.history-entry .delete-btn {
-    background-color: #dc3545;
+.history-entry.selected {
+    border: 2px solid blue;
 }
 
 .history-entry::after {
@@ -135,6 +117,30 @@ button:hover {
 
 .history-entry:hover::after {
     opacity: 1;
+}
+
+#actionButtons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.edit-btn,
+.delete-btn {
+    width: 0.5cm;
+    height: 0.5cm;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    margin: 0 5px;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+}
+
+.delete-btn {
+    background-color: #dc3545;
 }
 
 .history-date-group {

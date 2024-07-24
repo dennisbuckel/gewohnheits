@@ -1,3 +1,5 @@
+let selectedEntry = null;
+
 document.querySelectorAll('.success-btn').forEach(button => {
     button.addEventListener('click', function() {
         const habitId = this.closest('.habit').getAttribute('data-habit-id');
@@ -74,24 +76,8 @@ async function displayHistory() {
                 const entryDiv = document.createElement('div');
                 entryDiv.className = 'history-entry ' + entry.status;
                 entryDiv.setAttribute('data-tooltip', `${entry.date} - ${entry.habit}`);
+                entryDiv.addEventListener('click', () => selectEntry(entryDiv, entry._id, entry.habit, entry.status, entry.date));
 
-                const buttonContainer = document.createElement('div');
-                buttonContainer.className = 'button-container';
-
-                const editButton = document.createElement('button');
-                editButton.className = 'edit-btn';
-                editButton.setAttribute('data-tooltip', 'Bearbeiten');
-                editButton.onclick = () => editHabit(entry._id, entry.habit, entry.status, entry.date);
-
-                const deleteButton = document.createElement('button');
-                deleteButton.className = 'delete-btn';
-                deleteButton.setAttribute('data-tooltip', 'Löschen');
-                deleteButton.onclick = () => deleteHabit(entry._id);
-
-                buttonContainer.appendChild(editButton);
-                buttonContainer.appendChild(deleteButton);
-
-                entryDiv.appendChild(buttonContainer);
                 entriesDiv.appendChild(entryDiv);
             });
 
@@ -148,6 +134,18 @@ async function updateSuccessRate() {
     }
 }
 
+function selectEntry(entryDiv, id, habitText, status, date) {
+    if (selectedEntry) {
+        selectedEntry.classList.remove('selected');
+    }
+    selectedEntry = entryDiv;
+    selectedEntry.classList.add('selected');
+    document.getElementById('actionButtons').style.display = 'flex';
+
+    document.getElementById('editBtn').onclick = () => editHabit(id, habitText, status, date);
+    document.getElementById('deleteBtn').onclick = () => deleteHabit(id);
+}
+
 async function editHabit(id, habitText, status, date) {
     const newHabitText = prompt("Bearbeite den Habit", habitText);
     const newDate = prompt("Bearbeite das Datum (YYYY-MM-DD)", date);
@@ -164,6 +162,9 @@ async function editHabit(id, habitText, status, date) {
             if (response.ok) {
                 displayHistory();
                 updateSuccessRate();
+                document.getElementById('actionButtons').style.display = 'none';
+                selectedEntry.classList.remove('selected');
+                selectedEntry = null;
             } else {
                 const result = await response.json();
                 alert(result.message);
@@ -184,6 +185,9 @@ async function deleteHabit(id) {
             if (response.ok) {
                 displayHistory();
                 updateSuccessRate();
+                document.getElementById('actionButtons').style.display = 'none';
+                selectedEntry.classList.remove('selected');
+                selectedEntry = null;
             } else {
                 const result = await response.json();
                 alert(result.message);
