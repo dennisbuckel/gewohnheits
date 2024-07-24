@@ -107,18 +107,25 @@ async function displayHistory() {
                 entryDiv.className = 'history-entry ' + entry.status;
                 entryDiv.setAttribute('data-tooltip', `${entry.date} - ${entry.habit}`);
 
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.display = 'flex';
+                buttonContainer.style.flexDirection = 'column';
+                buttonContainer.style.alignItems = 'center';
+
                 const editButton = document.createElement('button');
                 editButton.className = 'edit-btn';
-                editButton.textContent = 'Edit';
-                editButton.onclick = () => editHabit(entry._id, entry.habit, entry.status);
+                editButton.setAttribute('data-tooltip', 'Bearbeiten');
+                editButton.onclick = () => editHabit(entry._id, entry.habit, entry.status, entry.date);
 
                 const deleteButton = document.createElement('button');
                 deleteButton.className = 'delete-btn';
-                deleteButton.textContent = 'Delete';
+                deleteButton.setAttribute('data-tooltip', 'Löschen');
                 deleteButton.onclick = () => deleteHabit(entry._id);
 
-                entryDiv.appendChild(editButton);
-                entryDiv.appendChild(deleteButton);
+                buttonContainer.appendChild(editButton);
+                buttonContainer.appendChild(deleteButton);
+
+                entryDiv.appendChild(buttonContainer);
                 entriesDiv.appendChild(entryDiv);
             });
 
@@ -175,16 +182,17 @@ async function updateSuccessRate() {
     }
 }
 
-async function editHabit(id, habitText, status) {
+async function editHabit(id, habitText, status, date) {
     const newHabitText = prompt("Bearbeite den Habit", habitText);
-    if (newHabitText !== null) {
+    const newDate = prompt("Bearbeite das Datum (YYYY-MM-DD)", date);
+    if (newHabitText !== null && newDate !== null) {
         try {
             const response = await fetch(`/api/habits/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ habit: newHabitText, status })
+                body: JSON.stringify({ habit: newHabitText, status, date: newDate })
             });
 
             if (response.ok) {

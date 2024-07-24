@@ -175,22 +175,39 @@ button:hover {
     font-weight: bold;
 }
 
+.edit-btn, .delete-btn {
+    width: 1cm;
+    height: 1cm;
+    margin: 2px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
 .edit-btn {
     background-color: #ffc107;
-    color: black;
-    border: none;
-    padding: 5px 10px;
-    margin: 2px;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
 .delete-btn {
     background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    margin: 2px;
+}
+
+button.edit-btn::after, button.delete-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
     border-radius: 5px;
-    cursor: pointer;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+button.edit-btn:hover::after, button.delete-btn:hover::after {
+    opacity: 1;
 }
