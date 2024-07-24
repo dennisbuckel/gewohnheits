@@ -148,37 +148,51 @@ function selectEntry(entryDiv, id, habitText, status, date) {
         selectedEntry.classList.add('selected');
         document.getElementById('actionButtons').style.display = 'flex';
 
-        document.getElementById('editBtn').onclick = () => editHabit(id, habitText, status, date);
+        document.getElementById('editBtn').onclick = () => showEditForm(id, habitText, date);
         document.getElementById('deleteBtn').onclick = () => deleteHabit(id);
     }
 }
 
-async function editHabit(id, habitText, status, date) {
-    const newHabitText = prompt("Bearbeite den Habit", habitText);
-    const newDate = prompt("Bearbeite das Datum (YYYY-MM-DD)", date);
-    if (newHabitText !== null && newDate !== null) {
-        try {
-            const response = await fetch(`/api/habits/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ habit: newHabitText, status, date: newDate })
-            });
+function showEditForm(id, habitText, date) {
+    document.getElementById('editFormContainer').style.display = 'block';
+    document.getElementById('editDate').value = date;
+    document.getElementById('editHabit').value = habitText;
 
-            if (response.ok) {
-                displayHistory();
-                updateSuccessRate();
-                document.getElementById('actionButtons').style.display = 'none';
-                selectedEntry.classList.remove('selected');
-                selectedEntry = null;
-            } else {
-                const result = await response.json();
-                alert(result.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
+    document.getElementById('editForm').onsubmit = (e) => {
+        e.preventDefault();
+        editHabit(id);
+    };
+
+    document.getElementById('cancelEdit').onclick = () => {
+        document.getElementById('editFormContainer').style.display = 'none';
+    };
+}
+
+async function editHabit(id) {
+    const newHabitText = document.getElementById('editHabit').value;
+    const newDate = document.getElementById('editDate').value;
+
+    try {
+        const response = await fetch(`/api/habits/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ habit: newHabitText, date: newDate })
+        });
+
+        if (response.ok) {
+            displayHistory();
+            updateSuccessRate();
+            document.getElementById('editFormContainer').style.display = 'none';
+            selectedEntry.classList.remove('selected');
+            selectedEntry = null;
+        } else {
+            const result = await response.json();
+            alert(result.message);
         }
+    } catch (error) {
+        console.error('Error:', error);
     }
 }
 

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Gewohnheitstracker</title>
-        <link rel="stylesheet" href="styles.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gewohnheitstracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
 <body>
     <div class="container">
         <h1>Gewohnheitstracker</h1>
@@ -27,8 +27,18 @@
         <div id="history"></div>
     </div>
     <div id="actionButtons" class="fixed-action-buttons" style="display: none;">
-        <button id="editBtn" class="edit-btn">Bearbeiten</button>
-        <button id="deleteBtn" class="delete-btn">Löschen</button>
+        <button id="editBtn" class="edit-btn"><i class="fas fa-edit"></i></button>
+        <button id="deleteBtn" class="delete-btn"><i class="fas fa-trash-alt"></i></button>
+    </div>
+    <div id="editFormContainer" class="edit-form-container" style="display: none;">
+        <form id="editForm">
+            <label for="editDate">Datum:</label>
+            <input type="date" id="editDate" name="editDate" required>
+            <label for="editHabit">Gewohnheit:</label>
+            <input type="text" id="editHabit" name="editHabit" required>
+            <button type="submit">Speichern</button>
+            <button type="button" id="cancelEdit">Abbrechen</button>
+        </form>
     </div>
     <script src="script.js"></script>
 </body>
