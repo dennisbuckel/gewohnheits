@@ -1,35 +1,3 @@
-const correctPassword = "meinGeheimnis"; // Ändere das Passwort nach Bedarf
-
-document.addEventListener('DOMContentLoaded', () => {
-    const passwordPrompt = document.getElementById('passwordPrompt');
-    const mainContent = document.getElementById('mainContent');
-
-    if (mainContent.style.display !== 'none') {
-        mainContent.style.display = 'none';
-    }
-
-    passwordPrompt.style.display = 'block';
-});
-
-document.getElementById('passwordInput').addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') {
-        checkPassword();
-    }
-});
-
-function checkPassword() {
-    const inputPassword = document.getElementById('passwordInput').value;
-    const passwordError = document.getElementById('passwordError');
-
-    if (inputPassword === correctPassword) {
-        document.getElementById('passwordPrompt').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
-        displayHistory();
-    } else {
-        passwordError.textContent = 'Falsches Passwort, bitte erneut versuchen.';
-    }
-}
-
 document.querySelectorAll('.success-btn').forEach(button => {
     button.addEventListener('click', function() {
         const habitId = this.closest('.habit').getAttribute('data-habit-id');
@@ -107,6 +75,9 @@ async function displayHistory() {
                 entryDiv.className = 'history-entry ' + entry.status;
                 entryDiv.setAttribute('data-tooltip', `${entry.date} - ${entry.habit}`);
 
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container';
+
                 const editButton = document.createElement('button');
                 editButton.className = 'edit-btn';
                 editButton.setAttribute('data-tooltip', 'Bearbeiten');
@@ -117,8 +88,10 @@ async function displayHistory() {
                 deleteButton.setAttribute('data-tooltip', 'Löschen');
                 deleteButton.onclick = () => deleteHabit(entry._id);
 
-                entryDiv.appendChild(editButton);
-                entryDiv.appendChild(deleteButton);
+                buttonContainer.appendChild(editButton);
+                buttonContainer.appendChild(deleteButton);
+
+                entryDiv.appendChild(buttonContainer);
                 entriesDiv.appendChild(entryDiv);
             });
 

@@ -7,28 +7,23 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="passwordPrompt" class="center">
-        <h2>Passwort eingeben</h2>
-        <input type="password" id="passwordInput" placeholder="Passwort">
-        <button onclick="checkPassword()">Eingeben</button>
-        <p id="passwordError" style="color: red;"></p>
-    </div>
-    <div id="mainContent" style="display:none;">
-        <div class="container">
-            <h1>Gewohnheitstracker</h1>
-            <div id="successRate">Erfolgsquote: 0%</div>
-            <form id="habitForm">
-                <label for="date">Datum:</label>
-                <input type="date" id="date" name="date" required>
-                <div class="habit" data-habit-id="footMassage">
-                    <input type="text" id="footMassageInput" placeholder="Fuß kneten" class="habit-text">
-                    <button type="button" class="success-btn">Success</button>
-                    <button type="button" class="fail-btn">Fail</button>
-                </div>
-            </form>
-            <h2>Vergangene Einträge</h2>
-            <div id="history"></div>
-        </div>
+    <div class="container">
+        <h1>Gewohnheitstracker</h1>
+        <div id="successRate">Erfolgsquote: 0%</div>
+        <input type="text" id="listName" placeholder="Name der Liste" required>
+        <button id="resetHistory">Liste zurücksetzen</button>
+        <form id="habitForm">
+            <label for="date">Datum:</label>
+            <input type="date" id="date" name="date" required>
+
+            <div class="habit" data-habit-id="footMassage">
+                <input type="text" id="footMassageInput" placeholder="Fuß kneten" class="habit-text">
+                <button type="button" class="success-btn">Success</button>
+                <button type="button" class="fail-btn">Fail</button>
+            </div>
+        </form>
+        <h2>Vergangene Einträge</h2>
+        <div id="history"></div>
     </div>
     <script src="script.js"></script>
 </body>

@@ -79,11 +79,9 @@ button:hover {
 }
 
 .history-entry {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: inline-block;
     width: 1cm;
-    height: 1.5cm; /* Increase height to accommodate buttons */
+    height: 1cm;
     margin: 2px;
     position: relative;
 }
@@ -94,6 +92,29 @@ button:hover {
 
 .history-entry.nicht-erledigt {
     background-color: red;
+}
+
+.history-entry .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2px;
+}
+
+.history-entry .edit-btn,
+.history-entry .delete-btn {
+    width: 0.5cm;
+    height: 0.5cm;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.history-entry .edit-btn {
+    background-color: #ffc107;
+}
+
+.history-entry .delete-btn {
+    background-color: #dc3545;
 }
 
 .history-entry::after {
@@ -116,24 +137,6 @@ button:hover {
     opacity: 1;
 }
 
-.suggestions {
-    margin-top: 10px;
-}
-
-.suggestions button {
-    margin: 5px;
-    padding: 10px 20px;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #fff;
-}
-
-.suggestions button:hover {
-    opacity: 0.8;
-}
-
 .history-date-group {
     margin-top: 30px;
     padding: 20px;
@@ -152,7 +155,7 @@ button:hover {
 .history-entries {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 5px;
     margin-top: 10px;
 }
 
@@ -175,23 +178,4 @@ button:hover {
     justify-content: center;
     color: white;
     font-weight: bold;
-}
-
-.edit-btn, .delete-btn {
-    width: 0.5cm;
-    height: 0.5cm;
-    margin-top: 2px;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-.edit-btn {
-    background-color: #ffc107;
-    margin-top: 5px; /* Ensure space between buttons and fields */
-}
-
-.delete-btn {
-    background-color: #dc3545;
-    margin-top: 5px; /* Ensure space between buttons and fields */
 }
