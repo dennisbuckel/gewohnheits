@@ -120,6 +120,8 @@ button:hover {
     opacity: 1;
 }
 
+/* Rest des bestehenden CSS-Codes bleibt unverändert */
+
 .fixed-action-buttons {
     position: fixed;
     bottom: 20px;
@@ -136,6 +138,11 @@ button:hover {
     border: none;
     cursor: pointer;
     border-radius: 50%;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
 }
 
 .edit-btn {

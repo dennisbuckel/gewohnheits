@@ -135,15 +135,22 @@ async function updateSuccessRate() {
 }
 
 function selectEntry(entryDiv, id, habitText, status, date) {
-    if (selectedEntry) {
+    if (selectedEntry === entryDiv) {
+        // If the same entry is clicked again, deselect it
         selectedEntry.classList.remove('selected');
-    }
-    selectedEntry = entryDiv;
-    selectedEntry.classList.add('selected');
-    document.getElementById('actionButtons').style.display = 'flex';
+        selectedEntry = null;
+        document.getElementById('actionButtons').style.display = 'none';
+    } else {
+        if (selectedEntry) {
+            selectedEntry.classList.remove('selected');
+        }
+        selectedEntry = entryDiv;
+        selectedEntry.classList.add('selected');
+        document.getElementById('actionButtons').style.display = 'flex';
 
-    document.getElementById('editBtn').onclick = () => editHabit(id, habitText, status, date);
-    document.getElementById('deleteBtn').onclick = () => deleteHabit(id);
+        document.getElementById('editBtn').onclick = () => editHabit(id, habitText, status, date);
+        document.getElementById('deleteBtn').onclick = () => deleteHabit(id);
+    }
 }
 
 async function editHabit(id, habitText, status, date) {
