@@ -62,17 +62,22 @@ app.put('/api/habits/:id', async (req, res) => {
 
 app.delete('/api/habits/:id', async (req, res) => {
     const { id } = req.params;
+    console.log(`Deleting habit with id: ${id}`);  // Debugging-Ausgabe
 
     try {
         const deletedHabit = await Habit.findByIdAndDelete(id);
         if (!deletedHabit) {
+            console.log(`Habit with id ${id} not found`);  // Debugging-Ausgabe
             return res.status(404).send();
         }
+        console.log(`Habit with id ${id} deleted`);  // Debugging-Ausgabe
         res.status(204).send();
     } catch (error) {
+        console.error('Error deleting habit:', error);  // Debugging-Ausgabe
         res.status(400).send(error);
     }
 });
+
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
