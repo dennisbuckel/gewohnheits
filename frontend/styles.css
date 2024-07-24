@@ -80,10 +80,10 @@ button:hover {
 
 .history-entry {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     width: 1cm;
-    height: 1cm;
+    height: 1.5cm; /* Increase height to accommodate buttons */
     margin: 2px;
     position: relative;
 }
@@ -180,7 +180,7 @@ button:hover {
 .edit-btn, .delete-btn {
     width: 0.5cm;
     height: 0.5cm;
-    margin-left: 2px;
+    margin-top: 2px;
     border: none;
     cursor: pointer;
     border-radius: 3px;
@@ -188,8 +188,10 @@ button:hover {
 
 .edit-btn {
     background-color: #ffc107;
+    margin-top: 5px; /* Ensure space between buttons and fields */
 }
 
 .delete-btn {
     background-color: #dc3545;
+    margin-top: 5px; /* Ensure space between buttons and fields */
 }

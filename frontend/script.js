@@ -107,11 +107,6 @@ async function displayHistory() {
                 entryDiv.className = 'history-entry ' + entry.status;
                 entryDiv.setAttribute('data-tooltip', `${entry.date} - ${entry.habit}`);
 
-                const buttonContainer = document.createElement('div');
-                buttonContainer.style.display = 'flex';
-                buttonContainer.style.flexDirection = 'column';
-                buttonContainer.style.alignItems = 'center';
-
                 const editButton = document.createElement('button');
                 editButton.className = 'edit-btn';
                 editButton.setAttribute('data-tooltip', 'Bearbeiten');
@@ -122,10 +117,8 @@ async function displayHistory() {
                 deleteButton.setAttribute('data-tooltip', 'Löschen');
                 deleteButton.onclick = () => deleteHabit(entry._id);
 
-                buttonContainer.appendChild(editButton);
-                buttonContainer.appendChild(deleteButton);
-
-                entryDiv.appendChild(buttonContainer);
+                entryDiv.appendChild(editButton);
+                entryDiv.appendChild(deleteButton);
                 entriesDiv.appendChild(entryDiv);
             });
 
