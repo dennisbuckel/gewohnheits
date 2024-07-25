@@ -1,15 +1,25 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 
-mongoose.connect('YOUR_MONGODB_CONNECTION_STRING', {
+const mongoURI = process.env.MONGODB_URI;
+if (!mongoURI) {
+    throw new Error('MONGODB_URI environment variable is not set');
+}
+
+mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
 });
 
 const HabitSchema = new mongoose.Schema({
@@ -52,7 +62,7 @@ app.put('/api/habits/:id', async (req, res) => {
             { new: true }
         );
         if (!updatedHabit) {
-            return res.status(404).send();
+            return res.status(404).send('Habit not found');
         }
         res.json(updatedHabit);
     } catch (error) {
@@ -62,22 +72,22 @@ app.put('/api/habits/:id', async (req, res) => {
 
 app.delete('/api/habits/:id', async (req, res) => {
     const { id } = req.params;
-    console.log(`Deleting habit with id: ${id}`);  // Debugging-Ausgabe
+    console.log(`Deleting habit with id: ${id}`);
 
     try {
-        const deletedHabit = await Habit.findByIdAndDelete(id);
+        const objectId = mongoose.Types.ObjectId(id);
+        const deletedHabit = await Habit.findByIdAndDelete(objectId);
         if (!deletedHabit) {
-            console.log(`Habit with id ${id} not found`);  // Debugging-Ausgabe
-            return res.status(404).send();
+            console.log(`Habit with id ${id} not found`);
+            return res.status(404).send('Habit not found');
         }
-        console.log(`Habit with id ${id} deleted`);  // Debugging-Ausgabe
+        console.log(`Habit with id ${id} deleted`);
         res.status(204).send();
     } catch (error) {
-        console.error('Error deleting habit:', error);  // Debugging-Ausgabe
-        res.status(400).send(error);
+        console.error('Error deleting habit:', error);
+        res.status(400).send('Error deleting habit');
     }
 });
-
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
