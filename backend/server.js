@@ -57,7 +57,7 @@ app.put('/api/habits/:id', async (req, res) => {
 
     try {
         const updatedHabit = await Habit.findByIdAndUpdate(
-            mongoose.Types.ObjectId(id),  // Konvertiere die ID zu ObjectId
+            mongoose.Types.ObjectId(id),
             { date, habit, status },
             { new: true }
         );
@@ -75,7 +75,9 @@ app.delete('/api/habits/:id', async (req, res) => {
     console.log(`Deleting habit with id: ${id}`);
 
     try {
-        const deletedHabit = await Habit.findByIdAndDelete(mongoose.Types.ObjectId(id));  // Konvertiere die ID zu ObjectId
+        const deletedHabit = await Habit.findOneAndDelete({
+            $expr: { $eq: ['$_id', { $toObjectId: id }] }
+        });
         if (!deletedHabit) {
             console.log(`Habit with id ${id} not found`);
             return res.status(404).send('Habit not found');
