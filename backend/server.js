@@ -90,6 +90,18 @@ app.delete('/api/habits/:id', async (req, res) => {
     }
 });
 
+// Setzt Caching-Header für statische Dateien
+app.use(express.static(path.join(__dirname, 'frontend'), {
+    maxAge: '30d', // Cache für 30 Tage
+    etag: false // Deaktiviert ETag für einfachere Cache-Kontrolle
+}));
+
+// Beispiel für eine spezifische Route, bei der das Caching konfiguriert wird
+app.get('/tracker.html', (req, res) => {
+    res.set('Cache-Control', 'public, max-age=3600'); // 1 Stunde Caching
+    res.sendFile(path.join(__dirname, 'frontend', 'tracker.html'));
+});
+
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
