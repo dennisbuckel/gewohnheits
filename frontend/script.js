@@ -241,3 +241,35 @@ document.addEventListener('DOMContentLoaded', () => {
     displayHistory();
     updateSuccessRate();
 });
+
+// Echtzeit-Validierung für das Datum
+document.getElementById('date').addEventListener('input', function () {
+    const dateInput = this.value;
+    const today = new Date().toISOString().split('T')[0];
+    if (dateInput > today) {
+        this.setCustomValidity('Das Datum kann nicht in der Zukunft liegen.');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+
+// Echtzeit-Validierung für den Text der Gewohnheit
+document.getElementById('footMassageInput').addEventListener('input', function () {
+    const textInput = this.value.trim();
+    if (textInput.length < 3) {
+        this.setCustomValidity('Die Gewohnheit muss mindestens 3 Zeichen lang sein.');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+
+document.getElementById('habitForm').addEventListener('submit', function (event) {
+    const dateInput = document.getElementById('date').value;
+    const habitInput = document.getElementById('footMassageInput').value.trim();
+
+    if (!dateInput || habitInput.length < 3) {
+        event.preventDefault();
+        alert('Bitte überprüfe deine Eingaben.');
+    }
+});
+
