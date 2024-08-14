@@ -224,19 +224,6 @@ async function deleteHabit(id) {
 }
 
 
-document.getElementById('resetHistory').addEventListener('click', async function() {
-    try {
-        await fetch('/api/habits', {
-            method: 'DELETE'
-        });
-
-        displayHistory();
-        updateSuccessRate();
-    } catch (error) {
-        console.error('Error:', error);
-    }
-});
-
 document.addEventListener('DOMContentLoaded', () => {
     displayHistory();
     updateSuccessRate();
