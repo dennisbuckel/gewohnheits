@@ -172,6 +172,10 @@ button:hover {
     margin-top: 10px;
 }
 
+#date {
+    margin-bottom: 20px; /* Erhöht den Abstand zwischen Datumsfeld und Eingabefeld */
+}
+
 .history-date-group {
     margin-top: 30px;
     padding: 20px;
