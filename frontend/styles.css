@@ -1,6 +1,6 @@
+/* Allgemeine Stile */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
     display: flex;
@@ -23,29 +23,20 @@ body {
 
 h1, h2 {
     margin-bottom: 20px;
+    text-align: center;
 }
 
-#successRate {
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
+/* Formulare */
 form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.habit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-    width: 100%;
-}
-
-.habit-text {
+input[type="text"],
+input[type="number"],
+input[type="time"],
+input[type="date"] {
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
@@ -60,9 +51,28 @@ button {
     border-radius: 5px;
     cursor: pointer;
     color: #fff;
+    font-size: 16px;
 }
 
+button:hover {
+    opacity: 0.8;
+}
 
+/* Erfolgsrate */
+#successRate {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* Gewohnheit */
+.habit {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Buttons für Erfolg und Misserfolg */
 .success-btn {
     background-color: green;
 }
@@ -71,10 +81,7 @@ button {
     background-color: red;
 }
 
-button:hover {
-    opacity: 0.8;
-}
-
+/* Historie-Einträge */
 .history-entry {
     display: inline-block;
     width: 1cm;
@@ -116,6 +123,7 @@ button:hover {
     opacity: 1;
 }
 
+/* Feststehende Aktionsbuttons */
 .fixed-action-buttons {
     position: fixed;
     bottom: 20px;
@@ -147,6 +155,7 @@ button:hover {
     background-color: #dc3545;
 }
 
+/* Formularcontainer für Bearbeitung */
 .edit-form-container {
     position: fixed;
     top: 50%;
@@ -164,18 +173,12 @@ button:hover {
     flex-direction: column;
 }
 
-.edit-form-container label {
-    margin-top: 10px;
-}
-
+.edit-form-container label,
 .edit-form-container button {
     margin-top: 10px;
 }
 
-#date {
-    margin-bottom: 20px; /* Erhöht den Abstand zwischen Datumsfeld und Eingabefeld */
-}
-
+/* Gruppen für Historie-Daten */
 .history-date-group {
     margin-top: 30px;
     padding: 20px;
@@ -198,6 +201,7 @@ button:hover {
     margin-top: 10px;
 }
 
+/* Fortschrittsbalken */
 .progress-bar {
     width: 100%;
     background-color: #f0f0f0;
@@ -219,7 +223,7 @@ button:hover {
     font-weight: bold;
 }
 
-/* Header Styles */
+/* Header Stile */
 header {
     background: linear-gradient(135deg, #e0e0e0 0%, #ffffff 100%);
     padding: 20px 0;
@@ -266,12 +270,8 @@ header nav ul li a::after {
     bottom: -5px;
     width: 0;
     height: 3px;
-    background-color: white;
-    transition: width 0.3s, left 0.3s;
-}
-
-header nav ul li a::after {
     background-color: #333;
+    transition: width 0.3s, left 0.3s;
 }
 
 header nav ul li a.active {
@@ -292,7 +292,7 @@ header nav ul li a.active {
     }
 }
 
-/* Startseite Styles */
+/* Startseitenübersicht */
 .pages-overview {
     display: flex;
     justify-content: center;
@@ -331,57 +331,6 @@ header nav ul li a.active {
 
 .page-link:hover img {
     transform: scale(1.1);
-}
-
-main {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-}
-
-h1, h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="time"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #28a745;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #218838;
 }
 
 /* Fahrtenbuch Einträge */
