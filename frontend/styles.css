@@ -332,11 +332,3 @@ header nav ul li a.active {
 .page-link:hover img {
     transform: scale(1.1);
 }
-
-input:invalid {
-    border-color: red;
-}
-
-input:valid {
-    border-color: green;
-}
