@@ -22,6 +22,19 @@ mongoose.connect(mongoURI, {
     console.error('Error connecting to MongoDB:', error);
 });
 
+const bcrypt = require('bcrypt');
+
+const plainPassword = 'Kokainika$14';
+const saltRounds = 10;
+
+bcrypt.hash(plainPassword, saltRounds, function(err, hash) {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    console.log("Gehashtes Passwort:", hash);
+});
+
 const HabitSchema = new mongoose.Schema({
     date: { type: Date, required: true },
     habit: { type: String, required: true },
