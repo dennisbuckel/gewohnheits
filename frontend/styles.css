@@ -332,3 +332,91 @@ header nav ul li a.active {
 .page-link:hover img {
     transform: scale(1.1);
 }
+
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Fahrtenbuch Einträge */
+#fahrtenbuchEintraege {
+    margin-top: 20px;
+}
+
+.fahrtenbuch-eintrag {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.fahrtenbuch-eintrag button {
+    background-color: #ffc107;
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.fahrtenbuch-eintrag button:hover {
+    background-color: #e0a800;
+}
+
+.fahrtenbuch-eintrag .delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.fahrtenbuch-eintrag .delete-btn:hover {
+    background-color: #c82333;
+}

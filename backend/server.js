@@ -22,18 +22,6 @@ mongoose.connect(mongoURI, {
     console.error('Error connecting to MongoDB:', error);
 });
 
-const bcrypt = require('bcrypt');
-
-const plainPassword = 'Kokainika$14';
-const saltRounds = 10;
-
-bcrypt.hash(plainPassword, saltRounds, function(err, hash) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log("Gehashtes Passwort:", hash);
-});
 
 const HabitSchema = new mongoose.Schema({
     date: { type: Date, required: true },
@@ -113,6 +101,40 @@ app.use(express.static(path.join(__dirname, 'frontend'), {
 app.get('/tracker.html', (req, res) => {
     res.set('Cache-Control', 'public, max-age=3600'); // 1 Stunde Caching
     res.sendFile(path.join(__dirname, 'frontend', 'tracker.html'));
+});
+
+const FahrtSchema = new mongoose.Schema({
+    von: String,
+    bis: String,
+    km: Number,
+    zeit: String,
+    emissionsfrei: Number
+});
+
+const Fahrt = mongoose.model('Fahrt', FahrtSchema);
+
+app.use(express.json());
+
+app.post('/api/fahrtenbuch', (req, res) => {
+    const neueFahrt = new Fahrt(req.body);
+    neueFahrt.save((err, savedFahrt) => {
+        if (err) return res.status(500).json({ success: false, error: err });
+        res.json({ success: true, entry: savedFahrt });
+    });
+});
+
+app.get('/api/fahrtenbuch', (req, res) => {
+    Fahrt.find({}, (err, fahrten) => {
+        if (err) return res.status(500).json({ success: false, error: err });
+        res.json({ success: true, entries: fahrten });
+    });
+});
+
+app.delete('/api/fahrtenbuch/:id', (req, res) => {
+    Fahrt.findByIdAndDelete(req.params.id, (err) => {
+        if (err) return res.status(500).json({ success: false, error: err });
+        res.json({ success: true });
+    });
 });
 
 

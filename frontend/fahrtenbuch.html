@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fahrtenbuch</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="tracker.html">Gewohnheitstracker</a></li>
+                <li><a href="fahrtenbuch.html">Fahrtenbuch</a></li>
+                <li><a href="platzhalter1.html">Platzhalter 1</a></li>
+                <li><a href="platzhalter2.html">Platzhalter 2</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Fahrtenbuch</h1>
+        <form id="fahrtenbuchForm">
+            <div class="form-group">
+                <label for="von">Von:</label>
+                <input type="text" id="von" name="von" placeholder="Startpunkt" required>
+            </div>
+            <div class="form-group">
+                <label for="bis">Bis:</label>
+                <input type="text" id="bis" name="bis" placeholder="Ziel" required>
+            </div>
+            <div class="form-group">
+                <label for="km">Kilometer:</label>
+                <input type="number" id="km" name="km" placeholder="Gefahrene Kilometer" required>
+            </div>
+            <div class="form-group">
+                <label for="zeit">Zeit:</label>
+                <input type="time" id="zeit" name="zeit" required>
+            </div>
+            <div class="form-group">
+                <label for="emissionsfrei">Emissionsfrei in %:</label>
+                <input type="number" id="emissionsfrei" name="emissionsfrei" placeholder="Emissionsfrei in Prozent" required>
+            </div>
+            <button type="submit">Eintrag hinzufügen</button>
+        </form>
+
+        <h2>Bisherige Einträge</h2>
+        <div id="fahrtenbuchEintraege">
+            <!-- Hier werden die Fahrtenbucheinträge angezeigt -->
+        </div>
+    </main>
+
+    <script src="fahrtenbuch.js"></script>
+</body>
+</html>
