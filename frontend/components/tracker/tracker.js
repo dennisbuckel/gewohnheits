@@ -279,6 +279,18 @@ function calculateSuccessRate(entries) {
     return total === 0 ? 0 : Math.round((successCount / total) * 100);
 }
 
+// Helper function to create a progress bar for success rate
+function createProgressBar(successRate) {
+    const progressBar = document.createElement('div');
+    progressBar.className = 'progress-bar';
+    const progressBarInner = document.createElement('div');
+    progressBarInner.className = 'progress-bar-inner';
+    progressBarInner.style.width = `${successRate}%`;
+    progressBarInner.textContent = `${successRate}%`;
+    progressBar.appendChild(progressBarInner);
+    return progressBar;
+}
+
 async function deleteHabit(id) {
     console.log("Attempting to delete habit with ID:", id);  // Logge die ID
     if (confirm("Willst du diesen Habit wirklich löschen?")) {
