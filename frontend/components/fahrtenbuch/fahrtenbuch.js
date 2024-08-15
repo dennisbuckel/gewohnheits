@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-
         const formData = new FormData(form);
         const entry = {
             von: formData.get('von'),
@@ -14,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
             emissionsfrei: formData.get('emissionsfrei')
         };
 
-        // Hier wird der neue Eintrag an das Backend gesendet
         fetch('/api/fahrtenbuch', {
             method: 'POST',
             headers: {
@@ -27,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.success) {
                     addEntryToPage(data.entry);
                     form.reset();
+                } else {
+                    console.error('Fehler:', data.message);
                 }
             })
             .catch(error => console.error('Fehler beim Hinzufügen des Eintrags:', error));
@@ -53,13 +53,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         fahrtenbuchEintraege.appendChild(entryElement);
 
-        // Event Listener für Bearbeiten und Löschen
         entryElement.querySelector('.edit-btn').addEventListener('click', () => editEntry(entry));
         entryElement.querySelector('.delete-btn').addEventListener('click', () => deleteEntry(entry._id));
     }
 
     function editEntry(entry) {
-        // Implementiere die Bearbeitungsfunktion hier
         console.log('Bearbeiten:', entry);
     }
 
@@ -71,16 +69,21 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 if (data.success) {
                     document.querySelector(`.fahrtenbuch-eintrag[data-id="${id}"]`).remove();
+                } else {
+                    console.error('Fehler:', data.message);
                 }
             })
             .catch(error => console.error('Fehler beim Löschen des Eintrags:', error));
     }
 
-    // Lädt alle Einträge beim Laden der Seite
     fetch('/api/fahrtenbuch')
         .then(response => response.json())
         .then(data => {
-            data.entries.forEach(addEntryToPage);
+            if (data.success) {
+                data.entries.forEach(addEntryToPage);
+            } else {
+                console.error('Fehler:', data.message);
+            }
         })
         .catch(error => console.error('Fehler beim Laden der Einträge:', error));
 });

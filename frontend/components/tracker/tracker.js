@@ -1,19 +1,50 @@
+// Initialization of selected entry
 let selectedEntry = null;
 
-document.querySelectorAll('.success-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const habitId = this.closest('.habit').getAttribute('data-habit-id');
-        saveHabit(habitId, 'erledigt');
-    });
+// Event Listener Initialization
+document.addEventListener('DOMContentLoaded', () => {
+    initEventListeners();
+    displayHistory();
+    updateSuccessRate();
 });
 
-document.querySelectorAll('.fail-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const habitId = this.closest('.habit').getAttribute('data-habit-id');
-        saveHabit(habitId, 'nicht-erledigt');
+// Initializes all event listeners
+function initEventListeners() {
+    document.querySelectorAll('.success-btn').forEach(button => {
+        button.addEventListener('click', handleSuccessClick);
     });
-});
 
+    document.querySelectorAll('.fail-btn').forEach(button => {
+        button.addEventListener('click', handleFailClick);
+    });
+
+    document.getElementById('date').addEventListener('input', validateDate);
+    document.getElementById('footMassageInput').addEventListener('input', validateHabitText);
+
+    document.getElementById('habitForm').addEventListener('submit', function (event) {
+        const dateInput = document.getElementById('date').value;
+        const habitInput = document.getElementById('footMassageInput').value.trim();
+
+        if (!dateInput || habitInput.length < 3) {
+            event.preventDefault();
+            alert('Bitte überprüfe deine Eingaben.');
+        }
+    });
+}
+
+// Event handler for success button click
+function handleSuccessClick() {
+    const habitId = this.closest('.habit').getAttribute('data-habit-id');
+    saveHabit(habitId, 'erledigt');
+}
+
+// Event handler for fail button click
+function handleFailClick() {
+    const habitId = this.closest('.habit').getAttribute('data-habit-id');
+    saveHabit(habitId, 'nicht-erledigt');
+}
+
+// Function to save habit
 async function saveHabit(habitId, status) {
     const date = document.getElementById('date').value;
     if (!date) {
@@ -50,6 +81,7 @@ async function saveHabit(habitId, status) {
     }
 }
 
+// Function to display history
 async function displayHistory() {
     try {
         const response = await fetch('/api/habits');
@@ -59,7 +91,7 @@ async function displayHistory() {
         historyDiv.innerHTML = '';
 
         const groupedByDate = groupBy(history, 'date');
-        const sortedDates = Object.keys(groupedByDate).sort((a, b) => new Date(b) - new Date(a)); // Sortiere die Daten absteigend
+        const sortedDates = Object.keys(groupedByDate).sort((a, b) => new Date(b) - new Date(a));
 
         for (const date of sortedDates) {
             const entries = groupedByDate[date];
@@ -84,13 +116,7 @@ async function displayHistory() {
             dateGroupDiv.appendChild(entriesDiv);
 
             const successRate = calculateSuccessRate(entries);
-            const progressBar = document.createElement('div');
-            progressBar.className = 'progress-bar';
-            const progressBarInner = document.createElement('div');
-            progressBarInner.className = 'progress-bar-inner';
-            progressBarInner.style.width = `${successRate}%`;
-            progressBarInner.textContent = `${successRate}%`;
-            progressBar.appendChild(progressBarInner);
+            const progressBar = createProgressBar(successRate);
             dateGroupDiv.appendChild(progressBar);
 
             historyDiv.appendChild(dateGroupDiv);
@@ -102,6 +128,7 @@ async function displayHistory() {
     }
 }
 
+// Helper functions for better code reuse
 function groupBy(array, key) {
     return array.reduce((result, currentValue) => {
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
@@ -120,23 +147,40 @@ function calculateSuccessRate(entries) {
     return total === 0 ? 0 : Math.round((successCount / total) * 100);
 }
 
-async function updateSuccessRate() {
-    try {
-        const response = await fetch('/api/habits');
-        const history = await response.json();
+function createProgressBar(successRate) {
+    const progressBar = document.createElement('div');
+    progressBar.className = 'progress-bar';
+    const progressBarInner = document.createElement('div');
+    progressBarInner.className = 'progress-bar-inner';
+    progressBarInner.style.width = `${successRate}%`;
+    progressBarInner.textContent = `${successRate}%`;
+    progressBar.appendChild(progressBarInner);
+    return progressBar;
+}
 
-        const total = history.length;
-        const successCount = history.filter(entry => entry.status === 'erledigt').length;
-        const successRate = total === 0 ? 0 : Math.round((successCount / total) * 100);
-        document.getElementById('successRate').textContent = `Erfolgsquote: ${successRate}%`;
-    } catch (error) {
-        console.error('Error:', error);
+// Validation functions
+function validateDate() {
+    const dateInput = this.value;
+    const today = new Date().toISOString().split('T')[0];
+    if (dateInput > today) {
+        this.setCustomValidity('Das Datum kann nicht in der Zukunft liegen.');
+    } else {
+        this.setCustomValidity('');
     }
 }
 
+function validateHabitText() {
+    const textInput = this.value.trim();
+    if (textInput.length < 3) {
+        this.setCustomValidity('Die Gewohnheit muss mindestens 3 Zeichen lang sein.');
+    } else {
+        this.setCustomValidity('');
+    }
+}
+
+// Functions for handling selected entry
 function selectEntry(entryDiv, id, habitText, status, date) {
     if (selectedEntry === entryDiv) {
-        // If the same entry is clicked again, deselect it
         selectedEntry.classList.remove('selected');
         selectedEntry = null;
         document.getElementById('actionButtons').style.display = 'none';
@@ -199,14 +243,11 @@ async function editHabit(id) {
 async function deleteHabit(id) {
     if (confirm("Willst du diesen Habit wirklich löschen?")) {
         try {
-            console.log(`Sending DELETE request for habit with id: ${id}`);  // Debugging-Ausgabe
-
             const response = await fetch(`/api/habits/${id}`, {
                 method: 'DELETE'
             });
 
             if (response.ok) {
-                console.log(`Habit with id ${id} deleted successfully`);  // Debugging-Ausgabe
                 displayHistory();
                 updateSuccessRate();
                 document.getElementById('actionButtons').style.display = 'none';
@@ -214,7 +255,6 @@ async function deleteHabit(id) {
                 selectedEntry = null;
             } else {
                 const result = await response.text();
-                console.log(`Failed to delete habit with id ${id}: ${result}`);  // Debugging-Ausgabe
                 alert(result);
             }
         } catch (error) {
@@ -222,41 +262,3 @@ async function deleteHabit(id) {
         }
     }
 }
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    displayHistory();
-    updateSuccessRate();
-});
-
-// Echtzeit-Validierung für das Datum
-document.getElementById('date').addEventListener('input', function () {
-    const dateInput = this.value;
-    const today = new Date().toISOString().split('T')[0];
-    if (dateInput > today) {
-        this.setCustomValidity('Das Datum kann nicht in der Zukunft liegen.');
-    } else {
-        this.setCustomValidity('');
-    }
-});
-
-// Echtzeit-Validierung für den Text der Gewohnheit
-document.getElementById('footMassageInput').addEventListener('input', function () {
-    const textInput = this.value.trim();
-    if (textInput.length < 3) {
-        this.setCustomValidity('Die Gewohnheit muss mindestens 3 Zeichen lang sein.');
-    } else {
-        this.setCustomValidity('');
-    }
-});
-
-document.getElementById('habitForm').addEventListener('submit', function (event) {
-    const dateInput = document.getElementById('date').value;
-    const habitInput = document.getElementById('footMassageInput').value.trim();
-
-    if (!dateInput || habitInput.length < 3) {
-        event.preventDefault();
-        alert('Bitte überprüfe deine Eingaben.');
-    }
-});
-
