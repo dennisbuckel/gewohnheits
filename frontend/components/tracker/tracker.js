@@ -254,6 +254,13 @@ async function editHabit(id) {
     }
 }
 
+// Helper function to format dates
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('de-DE', options);
+}
+
+
 // Helper function to group items by a specific key
 function groupBy(array, key) {
     return array.reduce((result, currentValue) => {
