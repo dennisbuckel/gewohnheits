@@ -272,6 +272,13 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString('de-DE', options);
 }
 
+// Function to calculate the success rate for a given set of entries
+function calculateSuccessRate(entries) {
+    const total = entries.length;
+    const successCount = entries.filter(entry => entry.status === 'erledigt').length;
+    return total === 0 ? 0 : Math.round((successCount / total) * 100);
+}
+
 async function deleteHabit(id) {
     console.log("Attempting to delete habit with ID:", id);  // Logge die ID
     if (confirm("Willst du diesen Habit wirklich löschen?")) {
