@@ -254,13 +254,6 @@ async function editHabit(id) {
     }
 }
 
-// Helper function to format dates
-function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('de-DE', options);
-}
-
-
 // Helper function to group items by a specific key
 function groupBy(array, key) {
     return array.reduce((result, currentValue) => {
@@ -271,6 +264,12 @@ function groupBy(array, key) {
         result[groupKey].push(currentValue);
         return result;
     }, {});
+}
+
+// Helper function to format dates
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('de-DE', options);
 }
 
 async function deleteHabit(id) {
