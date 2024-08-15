@@ -214,18 +214,26 @@ function selectEntry(entryDiv, id, habitText, status, date) {
 }
 
 function showEditForm(id, habitText, date) {
-    document.getElementById('editFormContainer').style.display = 'block';
-    document.getElementById('editDate').value = date.split('T')[0];
-    document.getElementById('editHabit').value = habitText;
+    // Zeige das Formular zum Bearbeiten an
+    const editFormContainer = document.getElementById('editFormContainer');
+    if (editFormContainer) {
+        editFormContainer.style.display = 'block';
+        document.getElementById('editDate').value = date.split('T')[0];
+        document.getElementById('editHabit').value = habitText;
 
-    document.getElementById('editForm').onsubmit = (e) => {
-        e.preventDefault();
-        editHabit(id);
-    };
+        // Setze den Onsubmit-Handler für das Bearbeitungsformular
+        document.getElementById('editForm').onsubmit = (e) => {
+            e.preventDefault();
+            editHabit(id);
+        };
 
-    document.getElementById('cancelEdit').onclick = () => {
-        document.getElementById('editFormContainer').style.display = 'none';
-    };
+        // Füge einen Klick-Handler für den "Abbrechen"-Button hinzu
+        document.getElementById('cancelEdit').onclick = () => {
+            editFormContainer.style.display = 'none';
+        };
+    } else {
+        console.error('Edit form container not found.');
+    }
 }
 
 async function editHabit(id) {

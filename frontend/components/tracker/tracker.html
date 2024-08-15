@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gewohnheitstracker</title>
     <link rel="stylesheet" href="../../styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Font Awesome für Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
                 <li><a href="../../index.html">Startseite</a></li>
-                <li><a href="../tracker/tracker.html">Gewohnheitstracker</a></li>
-                <li><a href="../fahrtenbuch/fahrtenbuch.html">Fahrtenbuch</a></li>
+                <li><a href="components/tracker/tracker.html">Gewohnheitstracker</a></li>
+                <li><a href="components/fahrtenbuch/fahrtenbuch.html">Fahrtenbuch</a></li>
                 <li><a href="../../page1.html">Platzhalter Seite 1</a></li>
                 <li><a href="../../page2.html">Platzhalter Seite 2</a></li>
             </ul>
@@ -34,11 +35,28 @@
             <h2>Vergangene Einträge</h2>
             <div id="history"></div>
         </div>
-        <div id="actionButtons" class="fixed-action-buttons" style="display: none;">
-            <button id="editBtn" class="edit-btn"><i class="fa fa-edit"></i></button>
-            <button id="deleteBtn" class="delete-btn"><i class="fa fa-trash"></i></button>
-        </div>
     </main>
-    <script src="../tracker/tracker.js"></script>
+
+    <!-- Container für das Bearbeitungsformular -->
+    <div id="editFormContainer" class="edit-form-container" style="display: none;">
+        <form id="editForm">
+            <label for="editDate">Datum:</label>
+            <input type="date" id="editDate" required>
+
+            <label for="editHabit">Gewohnheit:</label>
+            <input type="text" id="editHabit" required>
+
+            <button type="submit">Speichern</button>
+            <button type="button" id="cancelEdit">Abbrechen</button>
+        </form>
+    </div>
+
+    <!-- Aktionsbuttons (Bearbeiten und Löschen) -->
+    <div id="actionButtons" style="display: none;">
+        <button id="editBtn"><i class="fas fa-edit"></i></button>
+        <button id="deleteBtn"><i class="fas fa-trash"></i></button>
+    </div>
+
+    <script src="tracker.js"></script>
 </body>
 </html>
