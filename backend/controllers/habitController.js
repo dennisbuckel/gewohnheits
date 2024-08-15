@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Habit = require('../models/habit');
 
 exports.getHabits = async (req, res) => {
@@ -26,8 +27,11 @@ exports.updateHabit = async (req, res) => {
     const { date, habit, status } = req.body;
 
     try {
+        // Konvertiere die ID in ein ObjectId
+        const objectId = mongoose.Types.ObjectId(id);
+
         const updatedHabit = await Habit.findByIdAndUpdate(
-            id,
+            objectId,  // Verwende das konvertierte ObjectId
             { date, habit, status },
             { new: true }
         );
@@ -44,7 +48,10 @@ exports.deleteHabit = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const deletedHabit = await Habit.findByIdAndDelete(id);
+        // Konvertiere die ID in ein ObjectId
+        const objectId = mongoose.Types.ObjectId(id);
+
+        const deletedHabit = await Habit.findByIdAndDelete(objectId);
         if (!deletedHabit) {
             return res.status(404).json({ message: 'Habit not found' });
         }
