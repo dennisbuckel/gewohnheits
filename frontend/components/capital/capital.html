@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kapitalübersichtssystem</title>
-    <link rel="stylesheet" href="../../styles.css"> <!-- Korrekt verlinkt -->
+    <title>Kapitalübersicht</title>
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
     <header>
@@ -13,7 +13,7 @@
                 <li><a href="../../index.html">Startseite</a></li>
                 <li><a href="../tracker/tracker.html">Gewohnheitstracker</a></li>
                 <li><a href="../fahrtenbuch/fahrtenbuch.html">Fahrtenbuch</a></li>
-                <li><a href="capital.html">Kapital</a></li> <!-- Bleibt unverändert -->
+                <li><a href="../capital/capital.html">Kapital</a></li>
                 <li><a href="../../page2.html">Platzhalter Seite 2</a></li>
             </ul>
         </nav>
@@ -21,18 +21,23 @@
     <main>
         <h1>Kapitalübersicht</h1>
         <section id="platform-overview">
-            <h2>Plattformen</h2>
-            <div class="platform" id="binance">
-                <h3>Binance</h3>
+            <h2>Binance Portfolio</h2>
+            <div id="binance">
+                <h3>Gesamtwert: <span id="totalValue">Daten werden geladen...</span></h3>
+                <table id="assetsTable">
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Menge</th>
+                            <th>Wert (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamisch eingefügte Zeilen -->
+                    </tbody>
+                </table>
                 <button id="refresh-binance">Aktualisieren</button>
-                <div id="binance-data">Daten werden geladen...</div>
             </div>
-            <div class="platform" id="trust-wallet">
-                <h3>Trust Wallet</h3>
-                <button id="refresh-trust-wallet">Aktualisieren</button>
-                <div id="trust-wallet-data">Daten werden geladen...</div>
-            </div>
-            <!-- Weitere Plattformen hier einfügen -->
         </section>
 
         <section id="chart-overview">
@@ -48,6 +53,6 @@
             </div>
         </section>
     </main>
-    <script src="capital.js"></script> <!-- Korrekt verlinkt -->
+    <script src="capital.js"></script>
 </body>
 </html>
