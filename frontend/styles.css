@@ -64,10 +64,9 @@ input[type="date"] {
 }
 
 input[type="date"] {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    width: 50%; /* Verkleinert die Breite des Datumsfeldes */
+    display: block;
+    margin: 0 auto 10px auto; /* Zentriert das Datumsfeld horizontal und fügt unten einen Abstand hinzu */
 }
 
 button {
