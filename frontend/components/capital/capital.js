@@ -1,15 +1,18 @@
-async function fetchTotalValue() {
-    try {
-        const response = await fetch('/api/binance/totalvalue');
-        const text = await response.text(); // Erstmal als Text lesen
-        console.log('Server Response:', text); // Zum Debuggen
-        const data = JSON.parse(text); // Dann versuchen zu parsen
-        return data.totalValue;
-    } catch (error) {
-        console.error('Error fetching total balance:', error);
-        throw error;
+document.addEventListener('DOMContentLoaded', function () {
+    // Funktion zum Abrufen und Anzeigen des Binance-Gesamtwerts
+    async function fetchTotalValue() {
+        try {
+            const response = await fetch('/api/binance/totalvalue');
+            const text = await response.text(); // Erstmal als Text lesen
+            console.log('Server Response:', text); // Zum Debuggen
+            const data = JSON.parse(text); // Dann versuchen zu parsen
+            return data.totalValue;
+        } catch (error) {
+            console.error('Error fetching total balance:', error);
+            throw error;
+        }
     }
-}
+    
 
     // Funktion zum Abrufen und Anzeigen der Binance-Asset-Details
     async function fetchAccountInfo() {
