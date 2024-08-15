@@ -1,11 +1,11 @@
-const Habit = require('../models/Habit');
+const Habit = require('../models/habit');
 
 exports.getHabits = async (req, res) => {
     try {
         const habits = await Habit.find({});
         res.json(habits);
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -17,7 +17,7 @@ exports.createHabit = async (req, res) => {
         await newHabit.save();
         res.status(201).json(newHabit);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).json({ message: error.message });
     }
 };
 
@@ -32,11 +32,11 @@ exports.updateHabit = async (req, res) => {
             { new: true }
         );
         if (!updatedHabit) {
-            return res.status(404).send('Habit not found');
+            return res.status(404).json({ message: 'Habit not found' });
         }
         res.json(updatedHabit);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).json({ message: error.message });
     }
 };
 
@@ -46,10 +46,10 @@ exports.deleteHabit = async (req, res) => {
     try {
         const deletedHabit = await Habit.findByIdAndDelete(id);
         if (!deletedHabit) {
-            return res.status(404).send('Habit not found');
+            return res.status(404).json({ message: 'Habit not found' });
         }
-        res.status(204).send();
+        res.status(204).json({ message: 'Habit deleted' });
     } catch (error) {
-        res.status(400).send('Error deleting habit');
+        res.status(400).json({ message: error.message });
     }
 };
