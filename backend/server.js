@@ -22,10 +22,12 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 // Importiere Routen
+const binanceRoutes = require('./routes/binance');
 const habitRoutes = require('./routes/habits');
 const fahrtenbuchRoutes = require('./routes/fahrtenbuch');
 
 // Nutze Routen
+app.use('/api/binance', binanceRoutes);
 app.use('/api/habits', habitRoutes);
 app.use('/api/fahrtenbuch', fahrtenbuchRoutes);
 
@@ -48,3 +50,4 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
+
