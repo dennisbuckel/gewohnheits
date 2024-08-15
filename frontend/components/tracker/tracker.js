@@ -254,6 +254,18 @@ async function editHabit(id) {
     }
 }
 
+// Helper function to group items by a specific key
+function groupBy(array, key) {
+    return array.reduce((result, currentValue) => {
+        const groupKey = currentValue[key];
+        if (!result[groupKey]) {
+            result[groupKey] = [];
+        }
+        result[groupKey].push(currentValue);
+        return result;
+    }, {});
+}
+
 async function deleteHabit(id) {
     console.log("Attempting to delete habit with ID:", id);  // Logge die ID
     if (confirm("Willst du diesen Habit wirklich löschen?")) {
