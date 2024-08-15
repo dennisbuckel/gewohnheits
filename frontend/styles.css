@@ -53,9 +53,17 @@ form button {
 
 input[type="text"],
 input[type="number"],
-input[type="time"],
-input[type="date"] {
+input[type="time"] {
     width: calc(100% - 20px); /* Berechnet die Breite unter Berücksichtigung der Padding-Werte */
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Stellt sicher, dass Padding und Border in der Breite enthalten sind */
+}
+
+input[type="date"] {
+    width: calc(100% - 50px); /* Berechnet die Breite unter Berücksichtigung der Padding-Werte */
     margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #ccc;
