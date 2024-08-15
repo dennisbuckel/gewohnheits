@@ -38,11 +38,17 @@ h1, h2 {
 }
 
 /* Formulare */
+/* Formulare */
 form {
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* Links ausgerichtet */
     width: 100%;
+}
+
+form button {
+    align-self: center; /* Button in der Mitte */
+    margin-top: 10px; /* Optional: Abstand zum oberen Element */
 }
 
 input[type="text"],
