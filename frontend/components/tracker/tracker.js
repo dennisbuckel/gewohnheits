@@ -128,6 +128,22 @@ async function displayHistory() {
     }
 }
 
+// Function to update the overall success rate
+async function updateSuccessRate() {
+    try {
+        const response = await fetch('/api/habits');
+        const history = await response.json();
+
+        const total = history.length;
+        const successCount = history.filter(entry => entry.status === 'erledigt').length;
+        const successRate = total === 0 ? 0 : Math.round((successCount / total) * 100);
+
+        document.getElementById('successRate').textContent = `Erfolgsquote: ${successRate}%`;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 // Helper functions for better code reuse
 function groupBy(array, key) {
     return array.reduce((result, currentValue) => {
