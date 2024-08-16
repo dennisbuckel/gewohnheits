@@ -3,56 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kapitalübersicht</title>
-    <link rel="stylesheet" href="../../styles.css">
+    <title>Kapital</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="../../index.html">Startseite</a></li>
-                <li><a href="../tracker/tracker.html">Gewohnheitstracker</a></li>
-                <li><a href="../fahrtenbuch/fahrtenbuch.html">Fahrtenbuch</a></li>
-                <li><a href="../capital/capital.html">Kapital</a></li>
-                <li><a href="../../page2.html">Platzhalter Seite 2</a></li>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="components/tracker/tracker.html">Gewohnheitstracker</a></li>
+                <li><a href="components/fahrtenbuch/fahrtenbuch.html">Fahrtenbuch</a></li>
+                <li><a href="components/capital/capital.html">Kapital</a></li>
+                <li><a href="page2.html">Platzhalter Seite 2</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <h1>Kapitalübersicht</h1>
-        <section id="platform-overview">
-            <h2>Binance Portfolio</h2>
-            <div id="binance">
-                <h3>Gesamtwert: <span id="totalValue">Daten werden geladen...</span></h3>
-                <table id="assetsTable">
-                    <thead>
-                        <tr>
-                            <th>Asset</th>
-                            <th>Menge</th>
-                            <th>Wert (USD)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Dynamisch eingefügte Zeilen -->
-                    </tbody>
-                </table>
-                <button id="refresh-binance">Aktualisieren</button>
-            </div>
-        </section>
-
-        <section id="chart-overview">
-            <h2>Kapitalentwicklung</h2>
-            <div class="chart-controls">
-                <button id="timeframe-all">Gesamter Zeitraum</button>
-                <button id="timeframe-year">Ein Jahr</button>
-                <button id="timeframe-month">Ein Monat</button>
-                <!-- Weitere Zeitrahmen hier -->
-            </div>
-            <div id="capital-chart">
-                <!-- Chart wird hier angezeigt -->
-            </div>
-        </section>
+        <h1>Kapital</h1>
+        <button id="fetch-account-info">Lade AccountInfo</button>
+        <pre id="account-info-output"></pre>
     </main>
-    <script src="capital.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Funktion zum Abrufen und Anzeigen der Binance-Account-Info
+            async function fetchAccountInfo() {
+                try {
+                    const response = await fetch('/api/binance/account-info');
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        console.log('AccountInfo:', data);
+                        document.getElementById('account-info-output').textContent = JSON.stringify(data, null, 2);
+                    } else {
+                        console.error('Error fetching account info:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error fetching account info:', error);
+                }
+            }
+
+            // Event-Listener für den Ladebutton
+            document.getElementById('fetch-account-info').addEventListener('click', fetchAccountInfo);
+        });
+    </script>
 </body>
 </html>
