@@ -8,13 +8,6 @@ const client = Binance({
   apiSecret: process.env.BINANCE_SECRET_KEY,
 });
 
-// Funktion zum Erstellen einer Signatur
-function createSignature(query) {
-  return crypto.createHmac('sha256', process.env.BINANCE_SECRET_KEY)
-               .update(query)
-               .digest('hex');
-}
-
 // Funktion zur Überprüfung der Serverzeit
 async function ensureTimeSync() {
   try {
@@ -39,7 +32,7 @@ async function ensureTimeSync() {
 exports.getAccountInfo = async (req, res) => {
   try {
     const timestamp = await ensureTimeSync();
-    const accountInfo = await client.accountInfo({ timestamp });
+    const accountInfo = await client.account({ timestamp });
     res.json(accountInfo);
   } catch (error) {
     console.error('Error fetching Binance account info:', error);
@@ -50,10 +43,19 @@ exports.getAccountInfo = async (req, res) => {
 exports.getTotalBalance = async (req, res) => {
   try {
     const timestamp = await ensureTimeSync();
-    const accountInfo = await client.accountInfo({ timestamp });
-    const totalBalance = accountInfo.balances.reduce((acc, balance) => {
-      return acc + parseFloat(balance.free) + parseFloat(balance.locked);
-    }, 0);
+    const accountInfo = await client.account({ timestamp });
+
+    // Guthaben in USDT umrechnen
+    let totalBalance = 0;
+    for (let balance of accountInfo.balances) {
+      if (balance.asset !== 'USDT') {
+        const price = await client.prices({ symbol: `${balance.asset}USDT` });
+        totalBalance += parseFloat(balance.free) * parseFloat(price[`${balance.asset}USDT`]);
+      } else {
+        totalBalance += parseFloat(balance.free);
+      }
+    }
+
     res.json({ totalBalance });
   } catch (error) {
     console.error('Error fetching total balance:', error);
@@ -82,8 +84,7 @@ exports.makeSignedRequest = async (req, res) => {
 
     const signature = createSignature(query);
 
-    // Beispiel einer signierten Anfrage (hier könntest du spezifische Endpunkte anpassen)
-    const response = await client.accountInfo({ recvWindow, timestamp, signature });
+    const response = await client.account({ recvWindow, timestamp, signature });
     res.json(response);
   } catch (error) {
     console.error('Error making signed request:', error);
