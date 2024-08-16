@@ -35,6 +35,7 @@ async function ensureTimeSync() {
   }
 }
 
+// Funktion zur Abrufung von Konto-Informationen
 exports.getAccountInfo = async (req, res) => {
   try {
     const timestamp = await ensureTimeSync();
@@ -42,7 +43,7 @@ exports.getAccountInfo = async (req, res) => {
     const query = `recvWindow=${recvWindow}&timestamp=${timestamp}`;
     const signature = createSignature(query);
 
-    const accountInfo = await client.futuresAccountV3({
+    const accountInfo = await client.accountInfo({
       timestamp,
       recvWindow,
       signature,
@@ -55,6 +56,7 @@ exports.getAccountInfo = async (req, res) => {
   }
 };
 
+// Funktion zur Abrufung des Gesamtguthabens
 exports.getTotalBalance = async (req, res) => {
   try {
     const timestamp = await ensureTimeSync();
@@ -62,17 +64,47 @@ exports.getTotalBalance = async (req, res) => {
     const query = `recvWindow=${recvWindow}&timestamp=${timestamp}`;
     const signature = createSignature(query);
 
-    const accountInfo = await client.futuresAccountV3({
+    const accountInfo = await client.accountInfo({
       timestamp,
       recvWindow,
       signature,
     });
 
-    const totalBalance = parseFloat(accountInfo.totalWalletBalance);
+    const totalBalance = accountInfo.balances.reduce((acc, balance) => {
+      return acc + parseFloat(balance.free) + parseFloat(balance.locked);
+    }, 0);
     res.json({ totalBalance });
   } catch (error) {
     console.error('Error fetching total balance:', error);
     res.status(500).json({ message: 'Error fetching total balance' });
+  }
+};
+
+// Funktion zur Abrufung von Trades für ein bestimmtes Konto und Symbol
+exports.getAccountTrades = async (req, res) => {
+  try {
+    const { symbol, orderId, startTime, endTime, fromId, limit } = req.query;
+    const timestamp = await ensureTimeSync();
+    const recvWindow = 5000;
+    const query = `symbol=${symbol}&recvWindow=${recvWindow}&timestamp=${timestamp}`;
+    const signature = createSignature(query);
+
+    const trades = await client.myTrades({
+      symbol,
+      orderId,
+      startTime,
+      endTime,
+      fromId,
+      limit,
+      timestamp,
+      recvWindow,
+      signature,
+    });
+
+    res.json(trades);
+  } catch (error) {
+    console.error('Error fetching account trades:', error);
+    res.status(500).json({ message: 'Error fetching account trades' });
   }
 };
 
@@ -97,7 +129,7 @@ exports.makeSignedRequest = async (req, res) => {
     const signature = createSignature(query);
 
     // Beispiel einer signierten Anfrage (hier könntest du spezifische Endpunkte anpassen)
-    const response = await client.futuresAccountV3({
+    const response = await client.accountInfo({
       timestamp,
       recvWindow,
       signature,
