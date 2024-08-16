@@ -6,7 +6,6 @@ require('dotenv').config();
 const client = Binance({
   apiKey: process.env.BINANCE_API_KEY,
   apiSecret: process.env.BINANCE_SECRET_KEY,
-  getTime: () => Date.now()
 });
 
 // Funktion zum Erstellen einer Signatur
@@ -16,9 +15,31 @@ function createSignature(query) {
                .digest('hex');
 }
 
+// Funktion zur Überprüfung der Serverzeit
+async function ensureTimeSync() {
+  try {
+    const serverTime = await client.time();
+    const localTime = Date.now();
+
+    // Toleranz für Zeitabweichung in Millisekunden, z.B. 1000 ms = 1 Sekunde
+    const tolerance = 1000;
+
+    if (Math.abs(serverTime - localTime) > tolerance) {
+      console.warn(`Zeitabweichung festgestellt. Binance Serverzeit: ${serverTime}, Lokale Zeit: ${localTime}`);
+      return serverTime;
+    }
+
+    return localTime;
+  } catch (error) {
+    console.error('Fehler bei der Synchronisierung mit der Binance-Serverzeit:', error);
+    throw new Error('Zeitsynchronisation fehlgeschlagen');
+  }
+}
+
 exports.getAccountInfo = async (req, res) => {
   try {
-    const accountInfo = await client.accountInfo();
+    const timestamp = await ensureTimeSync();
+    const accountInfo = await client.accountInfo({ timestamp });
     res.json(accountInfo);
   } catch (error) {
     console.error('Error fetching Binance account info:', error);
@@ -28,7 +49,8 @@ exports.getAccountInfo = async (req, res) => {
 
 exports.getTotalBalance = async (req, res) => {
   try {
-    const accountInfo = await client.accountInfo();  // Hier wird die accountInfo-Methode aufgerufen
+    const timestamp = await ensureTimeSync();
+    const accountInfo = await client.accountInfo({ timestamp });
     const totalBalance = accountInfo.balances.reduce((acc, balance) => {
       return acc + parseFloat(balance.free) + parseFloat(balance.locked);
     }, 0);
@@ -42,6 +64,7 @@ exports.getTotalBalance = async (req, res) => {
 // Controller zum Pingen der Binance API
 exports.pingBinanceAPI = async (req, res) => {
   try {
+    await ensureTimeSync();
     const pingResult = await client.ping();
     res.json({ success: true, pingResult });
   } catch (error) {
@@ -53,7 +76,7 @@ exports.pingBinanceAPI = async (req, res) => {
 // Zusätzliche Funktion zur Erstellung einer signierten Anfrage (falls notwendig)
 exports.makeSignedRequest = async (req, res) => {
   try {
-    const timestamp = Date.now();
+    const timestamp = await ensureTimeSync();
     const recvWindow = 5000;
     const query = `recvWindow=${recvWindow}&timestamp=${timestamp}`;
 
