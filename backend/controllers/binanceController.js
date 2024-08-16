@@ -8,14 +8,20 @@ const client = Binance({
   apiSecret: process.env.BINANCE_SECRET_KEY,
 });
 
+// Funktion zum Erstellen einer Signatur
+function createSignature(query) {
+  return crypto.createHmac('sha256', process.env.BINANCE_SECRET_KEY)
+               .update(query)
+               .digest('hex');
+}
+
 // Funktion zur Überprüfung der Serverzeit
 async function ensureTimeSync() {
   try {
     const serverTime = await client.time();
     const localTime = Date.now();
 
-    // Toleranz für Zeitabweichung in Millisekunden, z.B. 1000 ms = 1 Sekunde
-    const tolerance = 1000;
+    const tolerance = 1000; // Toleranz für Zeitabweichung in Millisekunden
 
     if (Math.abs(serverTime - localTime) > tolerance) {
       console.warn(`Zeitabweichung festgestellt. Binance Serverzeit: ${serverTime}, Lokale Zeit: ${localTime}`);
@@ -32,7 +38,16 @@ async function ensureTimeSync() {
 exports.getAccountInfo = async (req, res) => {
   try {
     const timestamp = await ensureTimeSync();
-    const accountInfo = await client.account({ timestamp });
+    const recvWindow = 5000;
+    const query = `recvWindow=${recvWindow}&timestamp=${timestamp}`;
+    const signature = createSignature(query);
+
+    const accountInfo = await client.futuresAccountV3({
+      timestamp,
+      recvWindow,
+      signature,
+    });
+
     res.json(accountInfo);
   } catch (error) {
     console.error('Error fetching Binance account info:', error);
@@ -43,19 +58,17 @@ exports.getAccountInfo = async (req, res) => {
 exports.getTotalBalance = async (req, res) => {
   try {
     const timestamp = await ensureTimeSync();
-    const accountInfo = await client.account({ timestamp });
+    const recvWindow = 5000;
+    const query = `recvWindow=${recvWindow}&timestamp=${timestamp}`;
+    const signature = createSignature(query);
 
-    // Guthaben in USDT umrechnen
-    let totalBalance = 0;
-    for (let balance of accountInfo.balances) {
-      if (balance.asset !== 'USDT') {
-        const price = await client.prices({ symbol: `${balance.asset}USDT` });
-        totalBalance += parseFloat(balance.free) * parseFloat(price[`${balance.asset}USDT`]);
-      } else {
-        totalBalance += parseFloat(balance.free);
-      }
-    }
+    const accountInfo = await client.futuresAccountV3({
+      timestamp,
+      recvWindow,
+      signature,
+    });
 
+    const totalBalance = parseFloat(accountInfo.totalWalletBalance);
     res.json({ totalBalance });
   } catch (error) {
     console.error('Error fetching total balance:', error);
@@ -81,10 +94,15 @@ exports.makeSignedRequest = async (req, res) => {
     const timestamp = await ensureTimeSync();
     const recvWindow = 5000;
     const query = `recvWindow=${recvWindow}&timestamp=${timestamp}`;
-
     const signature = createSignature(query);
 
-    const response = await client.account({ recvWindow, timestamp, signature });
+    // Beispiel einer signierten Anfrage (hier könntest du spezifische Endpunkte anpassen)
+    const response = await client.futuresAccountV3({
+      timestamp,
+      recvWindow,
+      signature,
+    });
+
     res.json(response);
   } catch (error) {
     console.error('Error making signed request:', error);
