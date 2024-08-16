@@ -5,8 +5,18 @@ require('dotenv').config();
 const client = Binance({
   apiKey: process.env.BINANCE_API_KEY,
   apiSecret: process.env.BINANCE_SECRET_KEY,
-  useServerTime: true,
+  getTime: () => Date.now()
 });
+
+(async () => {
+  try {
+    const accountInfo = await client.accountInfo();
+    console.log(accountInfo);
+  } catch (error) {
+    console.error('Error fetching account info:', error);
+  }
+})();
+
 
 exports.getAccountInfo = async (req, res) => {
   try {
