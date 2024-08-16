@@ -8,16 +8,6 @@ const client = Binance({
   getTime: () => Date.now()
 });
 
-(async () => {
-  try {
-    const accountInfo = await client.accountInfo();
-    console.log(accountInfo);
-  } catch (error) {
-    console.error('Error fetching account info:', error);
-  }
-})();
-
-
 exports.getAccountInfo = async (req, res) => {
   try {
     const accountInfo = await client.accountInfo();
