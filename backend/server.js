@@ -30,6 +30,7 @@ const fahrtenbuchRoutes = require('./routes/fahrtenbuch');
 app.use('/api/binance', binanceRoutes);
 app.use('/api/habits', habitRoutes);
 app.use('/api/fahrtenbuch', fahrtenbuchRoutes);
+app.use('/api/binance', binanceRoutes);
 
 app.use(express.static(path.join(__dirname, 'frontend'), {
     maxAge: '30d',

@@ -8,4 +8,7 @@ router.get('/account-info', binanceController.getAccountInfo);
 // Route zum Abrufen des gesamten Kontostands
 router.get('/total-balance', binanceController.getTotalBalance);
 
+// Route zum Pingen der Binance API
+router.get('/ping', binanceController.pingBinanceAPI);
+
 module.exports = router;

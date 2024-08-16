@@ -42,6 +42,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Funktion zum Pingen der Binance API
+    async function pingBinance() {
+        try {
+            const response = await fetch('/api/binance/ping');
+            if (response.ok) {
+                console.log('Ping erfolgreich!');
+            } else {
+                console.error('Ping fehlgeschlagen:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Fehler beim Pingen der Binance API:', error);
+        }
+    }
+
     // Funktion zum Aktualisieren der Anzeige des Gesamtwerts und der Asset-Details
     async function updateDisplay() {
         try {
@@ -54,6 +68,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event-Listener für den Aktualisierungsbutton
     document.getElementById('refresh-binance').addEventListener('click', updateDisplay);
+
+    // Event-Listener für den Ping-Button
+    document.getElementById('ping-binance').addEventListener('click', pingBinance);
 
     // Initiales Laden der Daten
     updateDisplay();

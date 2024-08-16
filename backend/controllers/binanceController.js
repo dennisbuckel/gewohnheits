@@ -30,5 +30,17 @@ exports.getTotalBalance = async (req, res) => {
       res.status(500).json({ message: 'Error fetching total balance' });
     }
   };
+
+  // Controller zum Pingen der Binance API
+exports.pingBinanceAPI = async (req, res) => {
+  try {
+      const pingResult = await client.ping();
+      res.json({ success: true, pingResult });
+  } catch (error) {
+      console.error('Error pinging Binance API:', error);
+      res.status(500).json({ success: false, error: 'Error pinging Binance API' });
+  }
+};
+  
   
   
